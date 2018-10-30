@@ -133,13 +133,13 @@ public class Parser {
 
     private NodeStmt parseStmt() throws SyntaxException {
 	
-		if(curr().equals(new Token("id"))) {
-			Token id = curr();
-			match("id");
-			match("=");
-			NodeExpr expr = parseExpr();
-			return new NodeStmtAssn(id.lex(), expr);
-		}
+//		if(curr().equals(new Token("id"))) {
+//			Token id = curr();
+//			match("id");
+//			match("=");
+//			NodeExpr expr = parseExpr();
+//			return new NodeStmtAssn(id.lex(), expr);
+//		}
     	
     	//handle rd ..
 		if(curr().equals(new Token("rd"))) {
@@ -160,7 +160,7 @@ public class Parser {
 			match("then");
 			NodeStmt ifStmt= parseStmt();
 
-			if(curr().lex().equals("else")) {
+			if(curr().lex().equals(new Token("else"))) {
 				match("else");
 				NodeStmt elseStmt = parseStmt();
 				return new NodeStmtIfElse(bool, ifStmt, elseStmt);
@@ -183,12 +183,13 @@ public class Parser {
 			match("end");
 			return new NodeStmtBeg(block);
 		}
-		
-//		NodeAssn assn=parseAssn();
-//		match(";");
-//		NodeStmtAssn stmt=new NodeStmtAssn(assn);
-//		return stmt;
-		return null;
+		else {
+		NodeAssn assn=parseAssn();
+		//match(";");
+		NodeStmtAssn stmt=new NodeStmtAssn(assn);
+		return stmt;
+		}
+		//return null;
 	}
 
     public Node parse(String program) throws SyntaxException {
@@ -218,18 +219,36 @@ public class Parser {
 		NodeStmt stmt = parseStmt();
 		NodeBlock block = null;
 		
-		if(!curr().equals(new Token(";"))) {
-			//match(";");
-			//stmt.eval();
-			return new NodeBlock(stmt);
-		}
-		 else {
+//		if(!curr().equals(new Token(";"))) {
+//			//match(";");
+//			//stmt.eval();
+//			return new NodeBlock(stmt);
+//		}
+//		 else {
+//			match(";");
+//			block = parseBlock();
+//			return new NodeBlock(stmt, block);
+//		 }
+		if(curr().equals(new Token(";"))) {
 			match(";");
 			block = parseBlock();
-			return new NodeBlock(stmt, block);
-		 }
-		
+		}
+		return new NodeBlock(stmt, block);
 	}
+	
+	// Start of Grammar, builds program
+//    public NodeProgram parseProg() throws SyntaxException {
+//    	NodeBlock block = parseBlock();
+//    	NodeProgram prog = new NodeProgram(block);
+//    	return prog;
+//    }
+    
+//    // Parses through program
+//    public Node parse(String program) throws SyntaxException {
+//	scanner=new Scanner(program);
+//	scanner.next();
+//	return parseProg();
+//    }
 
 
 }

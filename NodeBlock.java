@@ -4,7 +4,7 @@
  * @author jasonsmith7
  *
  */
-public class NodeBlock extends NodeStmt {
+public class NodeBlock extends Node {
 	
     private NodeStmt stmt;
     private NodeBlock block;
@@ -19,7 +19,13 @@ public class NodeBlock extends NodeStmt {
     }
     
     public double eval(Environment env) throws EvalException {
-    	return stmt.eval(env);
+    	//return stmt.eval(env);
+double val = stmt.eval(env);
+		
+		if(block != null) {
+			val = block.eval(env);
+		}
+		return val; 
     }
     
 }	    

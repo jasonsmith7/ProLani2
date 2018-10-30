@@ -14,7 +14,7 @@ public class NodeStmtWhile extends NodeStmt {
 	}
 
 	public double eval (Environment env) throws EvalException {
-		if((bool.eval(env)) == 1.0) {
+		while((bool.eval(env)) == 1.0) {
 			stmt.eval(env);
 		}
 		return stmt.eval(env);
